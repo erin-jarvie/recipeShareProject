@@ -1,0 +1,145 @@
+<header class="d-flex flex-row align-items-center bg-success bg-opacity-25 p-3 mb-4 rounded-0">
+  <i class="fas fa-utensils fs-4 me-2 text-success"></i>
+  <h1 class="mb-0">RecipeShare</h1>
+</header>
+
+<div class="container m-0 w-100" style="max-width: 1500px">
+  <h2 class="mb-0">Your Recipes</h2>
+  <div class="d-flex flex-row justify-content-between my-3 w-100">
+    <button class="btn btn-success d-flex align-items-center" (click)="addNewRecipe()">
+      <i class="fas fa-plus me-2"></i> Add New Recipe
+    </button>
+    <button class="btn btn-outline-success d-flex align-items-center" (click)="showFiltersPopup()">
+      <i class="fas fa-filter me-2"></i> Filters
+    </button>
+  </div>
+
+  <table class="table align-middle table-hover w-100">
+    <thead class="table-success">
+      <tr>
+        <th scope="col">Tag</th>
+        <th scope="col">Name</th>
+        <th scope="col">Cooking Time</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let recipe of recipes">
+        <td>{{ recipe.dietaryTag?.name }}</td>
+        <td>{{ recipe.name }}</td>
+        <td>{{ recipe.cookingTimeMins }} mins</td>
+        <td>
+          <button class="btn btn-sm btn-link text-primary me-2" (click)="viewRecipe(recipe)">
+            <i class="fas fa-eye"></i>
+          </button>
+          <button class="btn btn-sm btn-link text-primary me-2" (click)="editRecipe(recipe)">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-link text-danger" (click)="showConfirmDeletePopup(recipe)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+<!-- ================= Filters Modal ================= -->
+<div class="modal fade"
+     id="filtersModal"
+     tabindex="-1"
+     aria-labelledby="filtersModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filtersModalLabel">Filter recipes</h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <!--search-->
+        <div class="mb-3">
+          <label for="searchInput" class="form-label fw-semibold">Search</label>
+          <input type="text"
+                 id="searchInput"
+                 class="form-control"
+                 [(ngModel)]="searchString"
+                 placeholder="Search recipes or ingredients">
+        </div>
+
+        <!-- Tag dropdown -->
+        <div class="mb-3">
+          <label for="tagSelect" class="form-label fw-semibold">Tag</label>
+
+          <select id="tagSelect"
+                  class="form-select"
+                  [(ngModel)]="selectedTagId">
+            <option value="">— Any tag —</option>
+            <option *ngFor="let tag of tags"
+                    [value]="tag.id">
+              {{ tag.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button *ngIf="selectedTagId != null || searchString.length !=0"
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="clearFilters()">
+          Clear Filters
+        </button>
+        <button type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal">
+          Close
+        </button>
+        <button class="btn btn-success"
+                (click)="applyFilters()">
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade"
+     id="deleteConfirmModal"
+     tabindex="-1"
+     aria-labelledby="deleteConfirmModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Deletion</h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete "<strong>{{ actionItem?.name }}</strong>"?
+      </div>
+      <div class="modal-footer">
+        <button type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="button"
+                class="btn btn-danger"
+                (click)="deleteRecipe()">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

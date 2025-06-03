@@ -1,0 +1,40 @@
+<header class="d-flex flex-row align-items-center bg-success bg-opacity-25 p-3 mb-4 rounded-0">
+  <i class="fas fa-utensils fs-4 me-2 text-success"></i>
+  <h1 class="mb-0">RecipeShare</h1>
+</header>
+
+<div class="container m-0 w-100" *ngIf="recipe">
+  <h2 class="mb-3">{{ recipe.name }}</h2>
+
+  <!-- Tag and cooking info -->
+  <div class="mb-3">
+    <span class="badge bg-success me-2" *ngIf="recipe.dietaryTag">
+      {{ recipe.dietaryTag.name }}
+    </span>
+    <span><strong>Cooking Time:</strong> {{ recipe.cookingTimeMins }} mins</span>
+    <br />
+    <span><strong>Servings:</strong> {{ recipe.noOfServings }}</span>
+  </div>
+
+  <!-- Description -->
+  <div class="mb-4">
+    <h5>Description</h5>
+    <p>{{ recipe.description }}</p>
+  </div>
+
+  <!-- Ingredients -->
+  <div class="mb-4">
+    <h5>Ingredients</h5>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let ingredient of recipe.ingredients">
+        {{ ingredient.amount }} {{ ingredient.unit }} {{ ingredient.name }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Method -->
+  <div class="mb-4">
+    <h5>Method</h5>
+    <p style="white-space: pre-line;">{{ recipe.method }}</p>
+  </div>
+</div>

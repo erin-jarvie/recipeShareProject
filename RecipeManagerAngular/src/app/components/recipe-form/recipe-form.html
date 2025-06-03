@@ -1,0 +1,76 @@
+<header class="d-flex flex-row align-items-center bg-success bg-opacity-25 p-3 mb-4 rounded-0">
+  <i class="fas fa-utensils fs-4 me-2 text-success"></i>
+  <h1 class="mb-0">RecipeShare</h1>
+</header>
+
+<div class="container mt-4">
+  <h2>{{ recipeId ? 'Edit' : 'Add' }} Recipe</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <!-- Basic Info -->
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input type="text" class="form-control" formControlName="name" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" formControlName="description"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Method</label>
+      <textarea class="form-control" formControlName="method" rows="6"></textarea>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <label class="form-label">Cooking Time (mins)</label>
+        <input type="number" class="form-control" formControlName="cookingTimeMins" />
+      </div>
+      <div class="col">
+        <label class="form-label">Servings</label>
+        <input type="number" class="form-control" formControlName="noOfServings" />
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Dietary Tag</label>
+      <select class="form-select" formControlName="dietaryTagId">
+        <option value="">— None —</option>
+        <option *ngFor="let tag of tags" [value]="tag.id">{{ tag.name }}</option>
+      </select>
+    </div>
+
+    <!-- Ingredients -->
+    <div class="mb-3">
+      <label class="form-label">Ingredients</label>
+
+      <div formArrayName="ingredients">
+        <div *ngFor="let ingredient of ingredients.controls; let i = index" [formGroupName]="i" class="mb-2 row g-2">
+          <div class="col-md-4">
+            <input type="text" class="form-control" formControlName="name" placeholder="Name">
+          </div>
+          <div class="col-md-3">
+            <input type="number" class="form-control" formControlName="amount" placeholder="Amount">
+          </div>
+          <div class="col-md-3">
+            <input type="text" class="form-control" formControlName="unit" placeholder="Unit">
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-danger" (click)="removeIngredient(i)">×</button>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-outline-success mt-2" (click)="addIngredient()">
+        + Add Ingredient
+      </button>
+    </div>
+
+    <div class="mb-5 mt-4">
+      <button type="submit" class="btn btn-success">Save Recipe</button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="back()">Cancel</button>
+    </div>
+  </form>
+</div>
